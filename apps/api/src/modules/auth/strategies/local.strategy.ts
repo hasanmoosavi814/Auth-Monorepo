@@ -11,9 +11,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(email: string, password: string) {
-    if (password === "")
-      throw new UnauthorizedException("Please provide your password!");
-    return this.authService.validateLocalUser(email, password);
+  async validate(email: string, password: string) {
+    if (!email) throw new UnauthorizedException("Email is required!");
+    if (!password) throw new UnauthorizedException("Password is required!");
+    return await this.authService.validateLocalUser(email, password);
   }
 }

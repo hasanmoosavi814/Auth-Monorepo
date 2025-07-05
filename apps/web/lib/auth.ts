@@ -14,7 +14,6 @@ export const signUp = async (
   const password = formData.get("password")?.toString() || "";
 
   const parsed = SignupFormSchema.safeParse({ name, email, password });
-
   if (!parsed.success) {
     return {
       success: false,
@@ -28,6 +27,7 @@ export const signUp = async (
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(parsed.data),
     });
+    console.log("response", response);
 
     if (response.status === 409) {
       return {

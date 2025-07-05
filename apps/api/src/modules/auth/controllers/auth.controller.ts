@@ -15,6 +15,7 @@ import { Roles } from "src/common/decorators/role.decorator";
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @Post("signup")
   @ApiOperation({ summary: "Register a new user" })
   @ApiResponse({ status: 201, description: "User created successfully" })

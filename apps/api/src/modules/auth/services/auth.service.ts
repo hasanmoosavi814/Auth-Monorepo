@@ -22,12 +22,14 @@ export class AuthService {
 
   async registerUser(createUserDto: CreateUserDto) {
     const user = await this.userService.findByEmail(createUserDto.email);
+    console.log(user);
     if (user) throw new ConflictException(AuthMessage.USER_ALREADY_EXISTS);
     return this.userService.create(createUserDto);
   }
 
   async validateLocalUser(email: string, password: string) {
     const user = await this.userService.findByEmail(email);
+    console.log(user);
     if (!user) throw new UnauthorizedException(AuthMessage.USER_NOT_FOUND);
     const isPasswordMatched = await verify(user.password, password);
     if (!isPasswordMatched)
