@@ -7,6 +7,7 @@ export const SignOutButton = () => {
 
   const handleSignOut = async () => {
     await fetch("/api/auth/signout");
+    router.push("/");
     router.refresh();
   };
 

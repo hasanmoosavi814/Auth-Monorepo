@@ -1,8 +1,4 @@
-import { getSession } from "@/lib/getSession";
-
-const Home = async () => {
-  const session = await getSession();
-  console.log("Home", { session });
+const Home = () => {
   return <div>Home</div>;
 };
 

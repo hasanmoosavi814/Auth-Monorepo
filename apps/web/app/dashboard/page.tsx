@@ -11,13 +11,15 @@ import { Button } from "@/components/ui/button";
 import { TRole } from "@/types/role-type";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
 
 const Dashboard = () => {
   // =============== State ===============
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [formState, setFormState] = useState<TUploadFormState | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const [formState, setFormState] = useState<TUploadFormState | null>(null);
 
   // =============== Routes ===============
   const router = useRouter();
@@ -52,6 +54,10 @@ const Dashboard = () => {
     const result = await uploadFileToServer(undefined, formData);
     setFormState(result);
     setLoading(false);
+    if (result?.message?.includes("Success")) {
+      const previewUrl = URL.createObjectURL(file);
+      setUploadedImageUrl(previewUrl);
+    }
     setFile(null);
   };
 
@@ -107,6 +113,18 @@ const Dashboard = () => {
           <p className="text-sm text-green-600 text-center">
             {formState.message}
           </p>
+        )}
+        {uploadedImageUrl && (
+          <div className="mt-4">
+            <p className="text-sm font-medium">Uploaded Image Preview:</p>
+            <Image
+              src={uploadedImageUrl}
+              alt="Uploaded Preview"
+              width={400}
+              height={300}
+              className="mt-2 mx-auto rounded-md border shadow object-contain"
+            />
+          </div>
         )}
       </form>
     </div>
