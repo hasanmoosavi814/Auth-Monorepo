@@ -53,3 +53,16 @@ export const SigninFormSchema = z.object({
     })
     .trim(),
 });
+
+export type TUploadFormState =
+  | {
+      errors?: { file?: string[] };
+      message?: string;
+    }
+  | undefined;
+
+export const UploadFormSchema = z.object({
+  file: z
+    .instanceof(File)
+    .refine((file) => file.size > 0, { message: "File must not be empty" }),
+});

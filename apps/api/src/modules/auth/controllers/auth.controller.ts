@@ -1,11 +1,12 @@
 import { Get, Post, Req, Request, Res, UseGuards } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from "@nestjs/swagger";
 import { RefreshAuthGuard } from "src/common/guards/refresh-auth.guard";
 import { Body, Controller } from "@nestjs/common";
 import { GoogleAuthGuard } from "src/common/guards/google-auth.guard";
 import { LocalAuthGuard } from "src/common/guards/auth.guard";
 import { CreateUserDto } from "../../user/dto/user.dto";
 import { AuthService } from "../services/auth.service";
+import { SigninDto } from "../dto/signin.dto";
 import { Response } from "express";
 import { Public } from "src/common/decorators/public.decorator";
 import { Roles } from "src/common/decorators/role.decorator";
@@ -28,7 +29,8 @@ export class AuthController {
   @Post("signin")
   @ApiOperation({ summary: "Sign in user" })
   @ApiResponse({ status: 201, description: "User Sign in successfully" })
-  async loginUser(@Request() req) {
+  @ApiBody({ type: SigninDto })
+  async loginUser(@Request() req, @Body() _body: SigninDto) {
     const { id, name, role } = req.user;
     const { accessToken, refreshToken } = await this.authService.loginUser({
       userId: id,
